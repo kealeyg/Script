@@ -1,11 +1,16 @@
-$domain = $args[0]
-$password = $args[1]
+$domain = "163ent"
+$password = ""
 $SecurePassword = ConvertTo-SecureString $password -asplaintext -force 
 $TextInfo = (Get-Culture).TextInfo
 
 Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools
 Install-ADDSForest -DomainName "${domain}.local" -DomainMode Win2012R2 -ForestMode Win2012R2 -DatabasePath "c:\NTDS" -SysvolPath "c:\SYSVOL" -LogPath "c:\Logs" -DomainNetbiosName "${domain}" -InstallDns -NoRebootOnCompletion -Force -SafeModeAdministratorPassword $SecurePassword
-Add-DnsServerForwarder -IPAddress 168.63.129.16 -PassThru
+
+# Don't Install DNS or FWD 
+# ----------------------------------------------------------------- #
+# Install-WindowsFeature DNS -IncludeManagementTools
+# Add-DnsServerForwarder -IPAddress 168.63.129.16 -PassThru
+
 $createUsersScript = @"
 `$TextInfo = (Get-Culture).TextInfo
 `$SecurePassword = ConvertTo-SecureString "$password" -asplaintext -force 
@@ -35,5 +40,5 @@ foreach(`$user in `$users){
 "@
 
 New-Item -Path C:\ -Name "createUsers.ps1" -ItemType "file" -Value $createUsersScript
-Restart-Computer -Force
+#Restart-Computer -Force
 exit 0

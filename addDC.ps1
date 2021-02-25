@@ -16,4 +16,4 @@ Add-DnsServerForwarder -IPAddress 168.63.129.16 -PassThru
 
 New-Item -Path C:\ -Name "buildDC.ps1" -ItemType "file" -Value $script
 #Restart-Computer -Force
-#exit 0
+exit 0
