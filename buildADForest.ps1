@@ -6,10 +6,9 @@ $TextInfo = (Get-Culture).TextInfo
 Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools
 Install-ADDSForest -DomainName "${domain}.local" -DomainMode Win2012R2 -ForestMode Win2012R2 -DatabasePath "c:\NTDS" -SysvolPath "c:\SYSVOL" -LogPath "c:\Logs" -DomainNetbiosName "${domain}" -InstallDns -NoRebootOnCompletion -Force -SafeModeAdministratorPassword $SecurePassword
 
-# Don't Install DNS or FWD 
-# ----------------------------------------------------------------- #
-# Install-WindowsFeature DNS -IncludeManagementTools
-# Add-DnsServerForwarder -IPAddress 168.63.129.16 -PassThru
+Install-WindowsFeature DNS -IncludeManagementTools
+Add-DnsServerForwarder -IPAddress 167.43.254.29 -PassThru
+Add-DnsServerForwarder -IPAddress 167.43.254.30 -PassThru
 
 $createUsersScript = @"
 `$TextInfo = (Get-Culture).TextInfo
